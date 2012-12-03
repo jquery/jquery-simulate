@@ -3,6 +3,7 @@ module.exports = function( grunt ) {
 
 "use strict";
 
+grunt.loadNpmTasks( "grunt-update-submodules" );
 grunt.loadNpmTasks( "grunt-compare-size" );
 grunt.loadNpmTasks( "grunt-git-authors" );
 
@@ -76,27 +77,6 @@ grunt.registerHelper( "git-date", function( fn ) {
 	});
 });
 
-grunt.registerTask( "submodules", function() {
-	var done = this.async();
-
-	grunt.verbose.write( "Updating submodules..." );
-
-	grunt.utils.spawn({
-		cmd: "git",
-		args: [ "submodule", "update", "--init" ]
-	}, function( err, result ) {
-		if ( err ) {
-			grunt.verbose.error();
-			done( err );
-			return;
-		}
-
-		grunt.log.writeln( result );
-
-		done();
-	});
-});
-
 grunt.registerTask( "max", function() {
 	var dist = "dist/jquery.simulate.js",
 		done = this.async(),
@@ -163,7 +143,7 @@ grunt.registerTask( "manifest", function() {
 	}, null, "\t" ) );
 });
 
-grunt.registerTask( "default", "lint submodules qunit build compare_size" );
+grunt.registerTask( "default", "lint update_submodules qunit build compare_size" );
 grunt.registerTask( "build", "max min" );
 
 };

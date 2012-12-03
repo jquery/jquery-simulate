@@ -30,7 +30,8 @@
   "devDependencies": {
     "grunt": "~0.3.17",
     "grunt-compare-size": ">=0.1.4",
-    "grunt-git-authors": "1.0.0",
+    "grunt-git-authors": ">=1.0.0",
+    "grunt-update-submodules": ">=0.1.2",
     "testswarm": "0.2.2"
   },
   "keywords": [ "simulate", "events", "keyboard", "mouse", "jquery" ]
