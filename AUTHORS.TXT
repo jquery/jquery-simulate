@@ -1,0 +1,7 @@
+Authors ordered by first contribution
+
+Richard D. Worth <rdworth@gmail.com>
+Eduardo Lundgren <eduardolundgren@gmail.com>
+Scott González <scott.gonzalez@gmail.com>
+Trey Hunner <treyhunner@gmail.com>
+Mike Sherov <mike.sherov@gmail.com>
