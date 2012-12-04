@@ -103,7 +103,9 @@ $.extend( $.simulate.prototype, {
 		} else if ( document.createEventObject ) {
 			event = document.createEventObject();
 			$.extend( event, options );
-			// TODO: what is this mapping for?
+			// standards event.button uses constants defined here: http://msdn.microsoft.com/en-us/library/ie/ff974877(v=vs.85).aspx
+			// old IE event.button uses constants defined here: http://msdn.microsoft.com/en-us/library/ie/ms533544(v=vs.85).aspx
+			// so we actually need to map the standard back to oldIE
 			event.button = { 0:1, 1:4, 2:2 }[ event.button ] || event.button;
 		}
 
