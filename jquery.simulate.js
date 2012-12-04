@@ -34,6 +34,7 @@ $.simulate = function( elem, type, options ) {
 };
 
 $.extend( $.simulate.prototype, {
+
 	simulateEvent: function( elem, type, options ) {
 		var event = this.createEvent( type, options );
 		this.dispatchEvent( elem, type, event, options );
@@ -58,7 +59,6 @@ $.extend( $.simulate.prototype, {
 			detail: 0,
 			screenX: 0,
 			screenY: 0,
-			// TODO: default clientX/Y to a position within the target element
 			clientX: 1,
 			clientY: 1,
 			ctrlKey: false,
@@ -106,7 +106,11 @@ $.extend( $.simulate.prototype, {
 			// standards event.button uses constants defined here: http://msdn.microsoft.com/en-us/library/ie/ff974877(v=vs.85).aspx
 			// old IE event.button uses constants defined here: http://msdn.microsoft.com/en-us/library/ie/ms533544(v=vs.85).aspx
 			// so we actually need to map the standard back to oldIE
-			event.button = { 0:1, 1:4, 2:2 }[ event.button ] || event.button;
+			event.button = {
+				0: 1,
+				1: 4,
+				2: 2
+			}[ event.button ] || event.button;
 		}
 
 		return event;
@@ -132,7 +136,10 @@ $.extend( $.simulate.prototype, {
 				event.initKeyEvent( type, options.bubbles, options.cancelable, options.view,
 					options.ctrlKey, options.altKey, options.shiftKey, options.metaKey,
 					options.keyCode, options.charCode );
-			// TODO: what is this supporting?
+			// initKeyEvent throws an exception in WebKit
+			// see: http://stackoverflow.com/questions/6406784/initkeyevent-keypress-only-works-in-firefox-need-a-cross-browser-solution
+			// and also https://bugs.webkit.org/show_bug.cgi?id=13368
+			// fall back to a generic event until we decide to implement initKeyboardEvent
 			} catch( err ) {
 				event = document.createEvent( "Events" );
 				event.initEvent( type, options.bubbles, options.cancelable );
@@ -151,9 +158,7 @@ $.extend( $.simulate.prototype, {
 			$.extend( event, options );
 		}
 
-		// TODO: can we hook into core's logic?
-		if ( $.ui.ie || (({}).toString.call( window.opera ) === "[object Opera]") ) {
-			// TODO: is charCode ever <0 ? Can we just use charCode || keyCode?
+		if ( !!/msie [\w.]+/.exec( navigator.userAgent.toLowerCase() ) || (({}).toString.call( window.opera ) === "[object Opera]") ) {
 			event.keyCode = (options.charCode > 0) ? options.charCode : options.keyCode;
 			event.charCode = undefined;
 		}
@@ -161,7 +166,6 @@ $.extend( $.simulate.prototype, {
 		return event;
 	},
 
-	// TODO: does this need type? Can't we just check event.type?
 	dispatchEvent: function( elem, type, event ) {
 		if ( elem.dispatchEvent ) {
 			elem.dispatchEvent( event );
