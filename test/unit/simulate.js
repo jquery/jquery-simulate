@@ -1,7 +1,9 @@
 module( "all" );
 
-test( "first test", function() {
+test( "keyboard events", function() {
 	expect( 1 );
-
-	ok( true, "testing works" );
+	jQuery("<div></div>")
+		.appendTo("#qunit-fixture")
+		.simulate("keydown", { keyCode: jQuery.simulate.keyCode.PAGE_UP });
+	ok( true, "key events do not throw an error" );
 });
