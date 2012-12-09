@@ -17,7 +17,7 @@ grunt.initConfig({
 	lint: {
 		src: [ "jquery.simulate.js" ],
 		grunt: "grunt.js",
-		test: "test/unit/**"
+		test: [ "test/*.js", "test/unit/*.js" ]
 	},
 
 	jshint: (function() {
@@ -39,7 +39,7 @@ grunt.initConfig({
 		return {
 			src: parserc(),
 			grunt: parserc(),
-			test: parserc( "test/unit/" )
+			test: parserc( "test/" )
 		};
 	})(),
 

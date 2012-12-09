@@ -21,6 +21,7 @@
 		"module",
 		"notEqual",
 		"ok",
+		"QUnit",
 		"start",
 		"stop",
 		"strictEqual",
