@@ -279,20 +279,31 @@ function findCenter( elem ) {
 
 $.extend( $.simulate.prototype, {
 	simulateDrag: function() {
-		var target = this.target,
+		var i = 0,
+			target = this.target,
 			options = this.options,
 			center = findCenter( target ),
 			x = Math.floor( center.x ),
 			y = Math.floor( center.y ),
 			dx = options.dx || 0,
 			dy = options.dy || 0,
+			moves = options.moves || 3,
 			coord = { clientX: x, clientY: y };
+
 		this.simulateEvent( target, "mousedown", coord );
-		coord = { clientX: x + 1, clientY: y + 1 };
-		this.simulateEvent( document, "mousemove", coord );
-		coord = { clientX: x + dx, clientY: y + dy };
-		this.simulateEvent( document, "mousemove", coord );
-		this.simulateEvent( document, "mousemove", coord );
+
+		for ( ; i < moves ; i++ ) {
+			x += dx / moves;
+			y += dy / moves;
+
+			coord = {
+				clientX: parseInt( x, 10 ),
+				clientY: parseInt( y, 10 )
+			};
+
+			this.simulateEvent( document, "mousemove", coord );
+		}
+
 		this.simulateEvent( target, "mouseup", coord );
 		this.simulateEvent( target, "click", coord );
 	}

@@ -22,4 +22,47 @@ for ( ; i < keyEvents.length; i++ ) {
 	testKeyEvent( keyEvents[ i ] );
 }
 
+module( "complex events" );
+
+asyncTest( "drag moves option", function() {
+
+	var moves = 15,
+		calls = 0,
+		el = jQuery("<div class='top-left'></div>").appendTo("#qunit-fixture");
+
+	expect( moves );
+
+	jQuery( document ).bind( "mousemove", function() {
+		ok( true, "mousemove event fired at the document" );
+		if ( ++calls === moves ) {
+			jQuery( document ).unbind("mousemove");
+			start();
+		}
+	});
+
+	el.simulate( "drag", {
+		moves: 1,
+		dx: 10,
+		dy: 20
+	}).simulate( "drag", {
+		moves: 5,
+		dx: 10,
+		dy: 20
+	});
+
+	// falsey defaults to 3
+	el.simulate( "drag", {
+		moves: 0,
+		dx: 10,
+		dy: 20
+	}).simulate( "drag", {
+		dx: 10,
+		dy: 20
+	}).simulate( "drag", {
+		moves: null,
+		dx: 10,
+		dy: 20
+	});
+});
+
 })();
