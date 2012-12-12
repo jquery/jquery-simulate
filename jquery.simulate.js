@@ -297,8 +297,8 @@ $.extend( $.simulate.prototype, {
 			y += dy / moves;
 
 			coord = {
-				clientX: parseInt( x, 10 ),
-				clientY: parseInt( y, 10 )
+				clientX: Math.round( x ),
+				clientY: Math.round( y )
 			};
 
 			this.simulateEvent( document, "mousemove", coord );

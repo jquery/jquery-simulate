@@ -28,14 +28,22 @@ asyncTest( "drag moves option", function() {
 
 	var moves = 15,
 		calls = 0,
-		el = jQuery("<div class='top-left'></div>").appendTo("#qunit-fixture");
+		el = jQuery("<div class='top-left'></div>").appendTo("#qunit-fixture"),
+		position;
 
-	expect( moves );
+	expect( moves + 2 );
 
-	jQuery( document ).bind( "mousemove", function() {
+	jQuery( document ).bind( "mousedown", function( event ) {
+		position = {
+			clientX : event.clientX,
+			clientY : event.clientY
+		};
+	}).bind( "mousemove", function( event ) {
 		ok( true, "mousemove event fired at the document" );
 		if ( ++calls === moves ) {
-			jQuery( document ).unbind("mousemove");
+			equal( position.clientX + 10, event.clientX, "last mousemove fired at correct clientX" );
+			equal( position.clientY + 20, event.clientY, "last mousemove fired at correct clientX" );
+			jQuery( document ).unbind("mousemove").unbind("mousedown");
 			start();
 		}
 	});
