@@ -305,7 +305,6 @@ $.extend( $.simulate.prototype, {
 		}
 
 		this.simulateEvent( target, "mouseup", coord );
-		this.simulateEvent( target, "click", coord );
 	}
 });
 
