@@ -57,7 +57,7 @@ grunt.initConfig({
 	},
 
 	compare_size: {
-		files: [ "dist/jquery.simulate.js" ]
+		files: [ "dist/jquery.simulate.js", "dist/jquery.simulate.min.js" ]
 	}
 });
 
