@@ -286,7 +286,7 @@ $.extend( $.simulate.prototype, {
 	},
 	makeDragger: function () {
 		return new $.simulate.dragger(this);
-	},
+	}
 });
 
 $.simulate.dragger = function (simulator) {
@@ -296,35 +296,41 @@ $.simulate.dragger = function (simulator) {
 };
 $.extend( $.simulate.dragger.prototype, {
 	start: function (target) {
-		if ( this.started || this.ended ) return;
+		if ( this.started || this.ended ) {
+			return;
+		}
 
 		this.started = true;
 		this.target = target;
 		var center = findCenter( target );
 		this.coord = {
 			clientX: Math.floor(center.x),
-			clientY: Math.floor(center.y),
+			clientY: Math.floor(center.y)
 		};
 
 		this.simulator.simulateEvent( target, "mousedown", this.coord );
 	},
 	move: function (delta) {
-		if (!this.started || this.ended) return;
+		if (!this.started || this.ended) {
+			return;
+		}
 
 		var moves = delta.steps || 3,
 			dx = Math.floor(delta.dx || 0),
-			dy = Math.floor(delta.dy || 0);
+			dy = Math.floor(delta.dy || 0),
+			final_coord = {
+				clientX: this.coord.clientX + dx,
+				clientY: this.coord.clientY + dy
+			},
+            i = 0,
+            x = 0,
+            y = 0,
+            coord = {};
 
-		var final_coord = {
-			clientX: this.coord.clientX + dx,
-			clientY: this.coord.clientY + dy,
-		};
-
-		for ( var i=0 ; i < moves-1 ; i++ ) {
-			var x = (dx / moves);
-			var y = (dy / moves);
-
-			var coord = {
+		for ( i=0 ; i < moves-1 ; i++ ) {
+			x = (dx / moves);
+			y = (dy / moves);
+			coord = {
 				clientX: Math.round( x ),
 				clientY: Math.round( y )
 			};
@@ -337,7 +343,9 @@ $.extend( $.simulate.dragger.prototype, {
 
 	},
 	end: function (delta) {
-		if (!this.started || this.ended) return;
+		if (!this.started || this.ended) {
+			return;
+		}
 		if ( delta ) {
 			this.move(delta);
 		}
@@ -346,7 +354,7 @@ $.extend( $.simulate.dragger.prototype, {
 
 		this.simulator.simulateEvent( this.target, "mouseup", this.coord );
 		this.simulator.simulateEvent( this.target, "click", this.coord );
-	},
+	}
 });
 
 })( jQuery );
