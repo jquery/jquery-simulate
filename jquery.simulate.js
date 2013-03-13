@@ -279,33 +279,81 @@ function findCenter( elem ) {
 
 $.extend( $.simulate.prototype, {
 	simulateDrag: function() {
-		var i = 0,
-			target = this.target,
-			options = this.options,
-			center = findCenter( target ),
-			x = Math.floor( center.x ),
-			y = Math.floor( center.y ),
-			dx = options.dx || 0,
-			dy = options.dy || 0,
-			moves = options.moves || 3,
-			coord = { clientX: x, clientY: y };
+		var dragger = this.makeDragger();
+		dragger.start(this.target);
+		dragger.move(this.options);
+		dragger.end();
+	},
+	makeDragger: function () {
+		return new $.simulate.dragger(this);
+	}
+});
 
-		this.simulateEvent( target, "mousedown", coord );
+$.simulate.dragger = function (simulator) {
+	this.started = false;
+	this.ended = false;
+	this.simulator = simulator;
+};
+$.extend( $.simulate.dragger.prototype, {
+	start: function (target) {
+		if ( this.started || this.ended ) {
+			return;
+		}
 
-		for ( ; i < moves ; i++ ) {
-			x += dx / moves;
-			y += dy / moves;
+		this.started = true;
+		this.target = target;
+		var center = findCenter( target );
+		this.coord = {
+			clientX: Math.floor(center.x),
+			clientY: Math.floor(center.y)
+		};
 
+		this.simulator.simulateEvent( target, "mousedown", this.coord );
+	},
+	move: function (delta) {
+		if (!this.started || this.ended) {
+			return;
+		}
+
+		var moves = delta.steps || 3,
+			dx = Math.floor(delta.dx || 0),
+			dy = Math.floor(delta.dy || 0),
+			final_coord = {
+				clientX: this.coord.clientX + dx,
+				clientY: this.coord.clientY + dy
+			},
+            i = 0,
+            x = 0,
+            y = 0,
+            coord = {};
+
+		for ( i=0 ; i < moves-1 ; i++ ) {
+			x = (dx / moves);
+			y = (dy / moves);
 			coord = {
 				clientX: Math.round( x ),
 				clientY: Math.round( y )
 			};
 
-			this.simulateEvent( document, "mousemove", coord );
+			this.simulator.simulateEvent( document, "mousemove", coord );
 		}
 
-		this.simulateEvent( target, "mouseup", coord );
-		this.simulateEvent( target, "click", coord );
+		this.simulator.simulateEvent( document, "mousemove", final_coord );
+		this.coord = final_coord;
+
+	},
+	end: function (delta) {
+		if (!this.started || this.ended) {
+			return;
+		}
+		if ( delta ) {
+			this.move(delta);
+		}
+
+		this.ended = true;
+
+		this.simulator.simulateEvent( this.target, "mouseup", this.coord );
+		this.simulator.simulateEvent( this.target, "click", this.coord );
 	}
 });
 
