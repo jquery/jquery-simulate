@@ -273,7 +273,7 @@ $.extend( $.simulate.prototype, {
 				this.simulateEvent( currentElementUnderMouse, "mouseout", this.options );
 			}
 
-			if( !$( "body" ).is( elementUnderMouse ) ) {
+			if( elementUnderMouse && !$( "body" ).is( elementUnderMouse ) ) {
 				// Fire mouseover on the new element
 				this.simulateEvent( elementUnderMouse, "mouseover", this.options );
 			}
