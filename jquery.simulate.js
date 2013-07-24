@@ -12,7 +12,8 @@
 ;(function( $, undefined ) {
 
 var rkeyEvent = /^key/,
-	rmouseEvent = /^(?:mouse|contextmenu)|click/;
+	rmouseEvent = /^(?:mouse|contextmenu)|click/,
+	currentElementUnderMouse;
 
 $.fn.simulate = function( type, options ) {
 	return this.each(function() {
@@ -258,10 +259,33 @@ $.extend( $.simulate.prototype, {
 			}
 			element.unbind( "blur", trigger );
 		}, 1 );
+	},
+	
+	simulateMousemove: function() {
+		var elementUnderMouse;
+
+		// What element will come to be underneath the mouse after the move?
+		elementUnderMouse = document.elementFromPoint( this.options.clientX, this.options.clientY );
+
+		if( elementUnderMouse !== currentElementUnderMouse ) {
+			if( currentElementUnderMouse ) {
+				// Fire mouseout on the previous element
+				this.simulateEvent( currentElementUnderMouse, "mouseout", this.options );
+			}
+
+			if( !$( "body" ).is( elementUnderMouse ) ) {
+				// Fire mouseover on the new element
+				this.simulateEvent( elementUnderMouse, "mouseover", this.options );
+			}
+		}
+
+		// Fire the mousemove event on the document
+		this.simulateEvent( document, "mousemove", this.options );
+
+		// Store the element under the mouse for the next move
+		currentElementUnderMouse = elementUnderMouse;
 	}
 });
-
-
 
 /** complex events **/
 
@@ -301,7 +325,7 @@ $.extend( $.simulate.prototype, {
 				clientY: Math.round( y )
 			};
 
-			this.simulateEvent( document, "mousemove", coord );
+			$( document ).simulate( "mousemove", coord );
 		}
 
 		this.simulateEvent( target, "mouseup", coord );
