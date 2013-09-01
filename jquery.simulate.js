@@ -12,7 +12,8 @@
 ;(function( $, undefined ) {
 
 var rkeyEvent = /^key/,
-	rmouseEvent = /^(?:mouse|contextmenu)|click/;
+	rmouseEvent = /^(?:mouse|contextmenu)|click/,
+	ruiEvent = /^change/;
 
 $.fn.simulate = function( type, options ) {
 	return this.each(function() {
@@ -81,6 +82,10 @@ $.extend( $.simulate.prototype, {
 
 		if ( rmouseEvent.test( type ) ) {
 			return this.mouseEvent( type, options );
+		}
+
+		if ( ruiEvent.test( type ) ) {
+			return this.uiEvent( type, options );
 		}
 	},
 
@@ -195,6 +200,33 @@ $.extend( $.simulate.prototype, {
 		if ( !!/msie [\w.]+/.exec( navigator.userAgent.toLowerCase() ) || (({}).toString.call( window.opera ) === "[object Opera]") ) {
 			event.keyCode = (options.charCode > 0) ? options.charCode : options.keyCode;
 			event.charCode = undefined;
+		}
+
+		return event;
+	},
+
+	uiEvent: function( type, options ) {
+		var event;
+		options = $.extend({
+			bubbles: true,
+			cancelable: true,
+			view: window
+		}, options );
+
+		if ( document.createEvent ) {
+			try {
+				event = document.createEvent( "UIEvents" );
+				event.initUIEvent( type, options.bubbles, options.cancelable, options.view);
+			} catch( err ) {
+				event = document.createEvent( "Events" );
+				event.initEvent( type, options.bubbles, options.cancelable );
+				$.extend( event, {
+					view: options.view
+				});
+			}
+		} else if ( document.createEventObject ) {
+			event = document.createEventObject();
+			$.extend( event, options );
 		}
 
 		return event;
