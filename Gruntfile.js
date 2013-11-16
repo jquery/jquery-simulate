@@ -3,57 +3,42 @@ module.exports = function( grunt ) {
 
 "use strict";
 
+var files = [
+	"jquery.simulate.js",
+	"Gruntfile.js",
+	"test/*.js",
+	"test/unit/*.js"
+];
+
 grunt.loadNpmTasks( "grunt-update-submodules" );
 grunt.loadNpmTasks( "grunt-compare-size" );
 grunt.loadNpmTasks( "grunt-git-authors" );
+grunt.loadNpmTasks( "grunt-contrib-qunit" );
+grunt.loadNpmTasks( "grunt-contrib-uglify" );
+grunt.loadNpmTasks( "grunt-contrib-jshint" );
 
 grunt.initConfig({
-	pkg: "<json:package.json>",
+	pkg: grunt.file.readJSON( "package.json" ),
 
-	meta: {
-		banner: "/*! jQuery Simulate v@<%= pkg.version %> http://github.com/jquery/jquery-simulate | jquery.org/license */"
+	jshint: {
+		options: {
+			jshintrc: true
+		},
+		all: files
 	},
-
-	lint: {
-		src: [ "jquery.simulate.js" ],
-		grunt: "grunt.js",
-		test: [ "test/*.js", "test/unit/*.js" ]
-	},
-
-	jshint: (function() {
-		function parserc( path ) {
-			var rc = grunt.file.readJSON( (path || "") + ".jshintrc" ),
-				settings = {
-					options: rc,
-					globals: rc.globals || {}
-				};
-
-			(rc.predef || []).forEach(function( prop ) {
-				settings.globals[ prop ] = true;
-			});
-			delete rc.predef;
-
-			return settings;
-		}
-
-		return {
-			src: parserc(),
-			grunt: parserc(),
-			test: parserc( "test/" )
-		};
-	})(),
 
 	qunit: {
 		files: "test/index.html"
 	},
 
-	min: {
-		"dist/jquery.simulate.min.js": [ "<banner>", "dist/jquery.simulate.js" ]
-	},
-
-	watch: {
-		files: [ "<config:lint.src>", "<config:lint.test>", "<config:lint.grunt>" ],
-		tasks: "default"
+	uglify: {
+		options: {
+			banner: "/*! jQuery Simulate v@<%= pkg.version %> http://github.com/jquery/jquery-simulate | jquery.org/license */"
+		},
+		build: {
+			src: "dist/jquery.simulate.js",
+			dest: "dist/jquery.simulate.min.js"
+		}
 	},
 
 	compare_size: {
@@ -61,10 +46,8 @@ grunt.initConfig({
 	}
 });
 
-
-
-grunt.registerHelper( "git-date", function( fn ) {
-	grunt.utils.spawn({
+function git_date( fn ) {
+	grunt.util.spawn({
 		cmd: "git",
 		args: [ "log", "-1", "--pretty=format:%ad" ]
 	}, function( error, result ) {
@@ -75,7 +58,7 @@ grunt.registerHelper( "git-date", function( fn ) {
 
 		fn( null, result );
 	});
-});
+}
 
 grunt.registerTask( "max", function() {
 	var dist = "dist/jquery.simulate.js",
@@ -86,7 +69,7 @@ grunt.registerTask( "max", function() {
 		version += " " + process.env.COMMIT;
 	}
 
-	grunt.helper( "git-date", function( error, date ) {
+	git_date(function( error, date ) {
 		if ( error ) {
 			return done( false );
 		}
@@ -143,7 +126,7 @@ grunt.registerTask( "manifest", function() {
 	}, null, "\t" ) );
 });
 
-grunt.registerTask( "default", "lint update_submodules qunit build compare_size" );
-grunt.registerTask( "build", "max min" );
+grunt.registerTask( "default", ["jshint", "update_submodules", "qunit", "build", "compare_size"] );
+grunt.registerTask( "build", ["max", "uglify"] );
 
 };
