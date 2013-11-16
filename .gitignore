@@ -2,3 +2,4 @@ build/.sizecache.json
 dist/
 .DS_Store
 node_modules
+.sizecache.json
