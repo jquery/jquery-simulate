@@ -1,5 +1,30 @@
 (function() {
 
+module( "mouse events" );
+
+test( "click on checkbox triggers change", function() {
+	var input = $( "#radiocheckbox-3" ),
+		checked = input.prop( "checked" );
+
+	input.simulate( "click" );
+
+	notEqual( checked, input.prop( "checked" ), "checkbox state changed" );
+});
+
+test( "click on radio triggers change", function() {
+	var firstRadio = $( "#radiocheckbox-1" ),
+		secondRadio = $( "#radiocheckbox-2" ),
+		checked = firstRadio.prop( "checked" );
+
+	if ( checked ) {
+		secondRadio.simulate( "click" );
+	} else {
+		firstRadio.simulate( "click" );
+	}
+
+	notEqual( checked, firstRadio.prop( "checked" ), "radio state changed" );
+});
+
 var key = jQuery.simulate.keyCode,
 	keyEvents = [ "keydown", "keyup", "keypress" ],
 	i = 0;

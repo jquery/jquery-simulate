@@ -8,3 +8,8 @@
 	padding: 0;
 	border: none;
 }
+
+.hidden {
+	position: absolute;
+	left: -9999px;
+}
