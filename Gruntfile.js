@@ -10,7 +10,7 @@ var files = [
 	"test/unit/*.js"
 ];
 
-grunt.loadNpmTasks( "grunt-update-submodules" );
+grunt.loadNpmTasks( "grunt-bowercopy" );
 grunt.loadNpmTasks( "grunt-compare-size" );
 grunt.loadNpmTasks( "grunt-git-authors" );
 grunt.loadNpmTasks( "grunt-contrib-qunit" );
@@ -19,6 +19,19 @@ grunt.loadNpmTasks( "grunt-contrib-jshint" );
 
 grunt.initConfig({
 	pkg: grunt.file.readJSON( "package.json" ),
+
+	bowercopy: {
+		all: {
+			options: {
+				destPrefix: "external"
+			},
+			files: {
+				"qunit/qunit.js": "qunit/qunit/qunit.js",
+				"qunit/qunit.css": "qunit/qunit/qunit.css",
+				"qunit/MIT-LICENSE.txt": "qunit/MIT-LICENSE.txt"
+			}
+		}
+	},
 
 	jshint: {
 		options: {
@@ -126,7 +139,7 @@ grunt.registerTask( "manifest", function() {
 	}, null, "\t" ) );
 });
 
-grunt.registerTask( "default", ["jshint", "update_submodules", "qunit", "build", "compare_size"] );
+grunt.registerTask( "default", ["jshint", "qunit", "build", "compare_size"] );
 grunt.registerTask( "build", ["max", "uglify"] );
 
 };
