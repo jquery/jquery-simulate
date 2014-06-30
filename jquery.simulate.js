@@ -12,7 +12,7 @@
 ;(function( $, undefined ) {
 
 var rkeyEvent = /^key/,
-	rmouseEvent = /^(?:mouse|contextmenu)|click/;
+	rmouseEvent = /^(?:mouse|contextmenu)|click|drag+(start|end|over|leave)|drop/;
 
 $.fn.simulate = function( type, options ) {
 	return this.each(function() {
