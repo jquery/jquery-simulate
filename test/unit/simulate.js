@@ -25,6 +25,69 @@ test( "click on radio triggers change", function() {
 	notEqual( checked, firstRadio.prop( "checked" ), "radio state changed" );
 });
 
+test( "accept dragstart event", function() {
+	var bindCalled = false
+	jQuery('<div></div>').bind('dragstart', function(e) {
+		bindCalled = true
+	}).simulate('dragstart',{})
+	equal(bindCalled, true)
+});
+
+test( "accept dragenter event", function() {
+	var bindCalled = false
+	jQuery('<div></div>').bind('dragenter', function(e) {
+		bindCalled = true
+	}).simulate('dragenter',{})
+	equal(bindCalled, true)
+});
+
+test( "accept drageleave event", function() {
+	var bindCalled = false
+	jQuery('<div></div>').bind('dragleave', function(e) {
+		bindCalled = true
+	}).simulate('dragleave',{})
+	equal(bindCalled, true)
+});
+
+test( "accept drageover event", function() {
+	var bindCalled = false
+	jQuery('<div></div>').bind('dragover', function(e) {
+		bindCalled = true
+	}).simulate('dragover',{})
+	equal(bindCalled, true)
+});
+
+test( "accept dragend event", function() {
+	var bindCalled = false
+	jQuery('<div></div>').bind('dragend', function(e) {
+		bindCalled = true
+	}).simulate('dragend',{})
+	equal(bindCalled, true)
+});
+
+test( "accept drop event", function() {
+	var bindCalled = false
+	jQuery('<div></div>').bind('drop', function(e) {
+		bindCalled = true
+	}).simulate('drop',{})
+	equal(bindCalled, true)
+});
+
+test( "do not accept dragunknown event", function() {
+	var bindCalled = false
+	var expectException = false
+	try {
+		jQuery('<div></div>').bind('dragunknown', function(e) {
+			bindCalled = true
+		}).simulate('dragunknown',{})
+	} catch (e) {
+		expectException = true
+	}
+	notEqual(bindCalled, true)
+	equal(expectException, true)
+});
+
+
 var key = jQuery.simulate.keyCode,
 	keyEvents = [ "keydown", "keyup", "keypress" ],
 	i = 0;
