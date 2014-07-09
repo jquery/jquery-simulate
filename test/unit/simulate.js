@@ -47,6 +47,94 @@ for ( ; i < keyEvents.length; i++ ) {
 	testKeyEvent( keyEvents[ i ] );
 }
 
+module( "mousemove events" );
+
+asyncTest( "fire mouseover/mouseout events on DOM elements the mouse collides with", function() {
+
+	var moves = 4,
+		calls = 1,
+		el = jQuery("<div class='top-left'></div>").appendTo("#qunit-fixture"),
+		auditTrail = [];
+
+	// Expect one assertion per event, and one test of the audit trail
+	expect(
+		// Once for the element having been entered
+		1 +
+		// Once for the element having been exited
+		1 +
+		// Once for each mouse move
+		moves +
+		// Once for the audit trail
+		1
+	);
+
+	el
+		// Listen to the element for mouseover events
+		.bind( "mouseover", function () {
+			ok( true, "mouseover event fired at the element" );
+
+			// Record the event
+			auditTrail.push( "call" + calls + ";mouseover" );
+		})
+		// Listen to the element for mouseout events
+		.bind( "mouseout", function () {
+			ok( true, "mouseout event fired at the element" );
+
+			// Record the event
+			auditTrail.push( "call" + calls + ";mouseout" );
+		});
+	jQuery( document ).bind( "mousemove", function() {
+		ok( true, "mousemove event fired at the document" );
+
+		// Record the event
+		auditTrail.push( "call" + calls + ";mousemove" );
+
+		if ( ++calls > moves ) {
+			deepEqual( auditTrail, [
+				// The first move should have resulted in a simple mousemove
+				"call1;mousemove",
+				// The second move should have resulted in a mouseover on the element followed by a mousemove on the document
+				"call2;mouseover",
+				"call2;mousemove",
+				// The third call should have resulted in a simple mousemove
+				"call3;mousemove",
+				// The fourth call should have resulted in a mouseout on the element followed by a mousemove on the document
+				"call4;mouseout",
+				"call4;mousemove"
+			]);
+
+			// Clean up
+			jQuery( document ).unbind( "mousemove" );
+			el.unbind( "mouseover" ).unbind( "mouseout" );
+
+			// Tell QUnit to give'r
+			start();
+		}
+	});
+
+	jQuery( document )
+		// Start outside the element
+		.simulate( "mousemove", {
+			clientX: 0,
+			clientY: 2
+		})
+		// Move over top of the element
+		.simulate( "mousemove", {
+			clientX: 0,
+			clientY: 1
+		})
+		// Move within the element
+		.simulate( "mousemove", {
+			clientX: 1,
+			clientY: 1
+		})
+		// Move out of the element
+		.simulate( "mousemove", {
+			clientX: 2,
+			clientY: 1
+		});
+});
+
 module( "complex events" );
 
 asyncTest( "drag moves option", function() {

@@ -1,9 +1,9 @@
 .top-left {
 	position: fixed;
-	top: 1;
-	left: 1;
-	width: 1px;
-	height: 1px;
+	top: 0px;
+	left: 0px;
+	width: 2px;
+	height: 2px;
 	margin: 0;
 	padding: 0;
 	border: none;
