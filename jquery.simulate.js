@@ -279,12 +279,24 @@ function findCenter( elem ) {
 	};
 }
 
+function findCorner( elem ) {
+	var offset,
+		document = $( elem.ownerDocument );
+	elem = $( elem );
+	offset = elem.offset();
+
+	return {
+		x: offset.left - document.scrollLeft(),
+		y: offset.top - document.scrollTop()
+	};
+}
+
 $.extend( $.simulate.prototype, {
 	simulateDrag: function() {
 		var i = 0,
 			target = this.target,
 			options = this.options,
-			center = findCenter( target ),
+			center = options.handle === "corner" ? findCorner( target ) : findCenter( target ),
 			x = Math.floor( center.x ),
 			y = Math.floor( center.y ),
 			dx = options.dx || 0,
