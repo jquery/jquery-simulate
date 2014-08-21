@@ -22,6 +22,15 @@ for ( ; i < keyEvents.length; i++ ) {
 	testKeyEvent( keyEvents[ i ] );
 }
 
+module( "ui events" );
+
+test( "change event", function() {
+	expect( 1 );
+	jQuery("<input></input>").bind( "change", function( event ) {
+		ok( true, "change event fired" );
+	}).appendTo("#qunit-fixture").simulate( "change" );
+});
+
 module( "complex events" );
 
 asyncTest( "drag moves option", function() {
