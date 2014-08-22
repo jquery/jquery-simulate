@@ -1,5 +1,6 @@
 {
 	"name": "jquery-simulate",
+	"version": "1.0.0",
 	"devDependencies": {
 		"qunit": "1.14.0",
 		"jquery-1.6.0": "jquery#1.6.0",
