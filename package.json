@@ -2,7 +2,7 @@
   "name": "jquery-simulate",
   "title": "jQuery Simulate",
   "description": "jQuery plugin for simulating browser mouse and keyboard events",
-  "version": "0.0.1",
+  "version": "1.0.1-pre",
   "homepage": "https://github.com/jquery/jquery-simulate",
   "author": {
     "name": "jQuery Foundation and other contributors",
