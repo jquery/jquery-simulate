@@ -291,6 +291,10 @@ function findCorner( elem ) {
 	};
 }
 
+function hasNoMoves(moves, dx, dy) {
+	return typeof(moves) !== "number" || (moves === 0 && (dx !== 0 || dy !== 0));
+}
+
 $.extend( $.simulate.prototype, {
 	simulateDrag: function() {
 		var i = 0,
@@ -302,7 +306,7 @@ $.extend( $.simulate.prototype, {
 			coord = { clientX: x, clientY: y },
 			dx = options.dx || ( options.x !== undefined ? options.x - x : 0 ),
 			dy = options.dy || ( options.y !== undefined ? options.y - y : 0 ),
-			moves = options.moves || 3;
+			moves = hasNoMoves(options.moves, dx, dy) ? 3 : options.moves;
 
 		this.simulateEvent( target, "mousedown", coord );
 
