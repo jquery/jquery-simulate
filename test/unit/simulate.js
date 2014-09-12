@@ -50,26 +50,36 @@ for ( ; i < keyEvents.length; i++ ) {
 module( "complex events" );
 
 asyncTest( "drag moves option", function() {
-
-	var moves = 15,
-		calls = 0,
+	var expectedMoves = 17,
+		expectedUps = 6,
+		expectedDowns = 6,
+		callsMoves = 0,
+		callsUp = 0,
 		el = jQuery("<div class='top-left'></div>").appendTo("#qunit-fixture"),
 		position;
 
-	expect( moves + 2 );
+	expect(expectedUps + expectedDowns + expectedMoves);
 
-	jQuery( document ).bind( "mousedown", function( event ) {
+	jQuery(document).bind("mousedown", function (event) {
+		ok(true, "mousedown event fired at the document");
 		position = {
-			clientX : event.clientX,
-			clientY : event.clientY
+			clientX: event.clientX,
+			clientY: event.clientY
 		};
-	}).bind( "mousemove", function( event ) {
-		ok( true, "mousemove event fired at the document" );
-		if ( ++calls === moves ) {
-			equal( position.clientX + 10, event.clientX, "last mousemove fired at correct clientX" );
-			equal( position.clientY + 20, event.clientY, "last mousemove fired at correct clientX" );
-			jQuery( document ).unbind("mousemove").unbind("mousedown");
+	}).bind("mouseup", function () {
+		ok(true, "mouseup event fired at the document");
+		if (++callsUp === expectedUps) {
+			jQuery(document)
+				.unbind("mousedown")
+				.unbind("mousemove")
+				.unbind("mouseup");
 			start();
+		}
+	}).bind("mousemove", function (event) {
+		ok(true, "mousemove event fired at the document");
+		if (++callsMoves === expectedMoves - 2) {
+			equal(position.clientX + 10, event.clientX, "last mousemove fired at correct clientX");
+			equal(position.clientY + 20, event.clientY, "last mousemove fired at correct clientX");
 		}
 	});
 
@@ -95,6 +105,13 @@ asyncTest( "drag moves option", function() {
 		moves: null,
 		dx: 10,
 		dy: 20
+	});
+	
+	// no moves
+	el.simulate("drag", {
+		moves: 0,
+		dx: 0,
+		dy: 0
 	});
 });
 
