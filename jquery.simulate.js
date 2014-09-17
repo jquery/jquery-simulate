@@ -110,30 +110,6 @@ $.extend( $.simulate.prototype, {
 				options.screenX, options.screenY, options.clientX, options.clientY,
 				options.ctrlKey, options.altKey, options.shiftKey, options.metaKey,
 				options.button, options.relatedTarget || document.body.parentNode );
-
-			// IE 9+ creates events with pageX and pageY set to 0.
-			// Trying to modify the properties throws an error,
-			// so we define getters to return the correct values.
-			if ( event.pageX === 0 && event.pageY === 0 && Object.defineProperty ) {
-				eventDoc = event.relatedTarget.ownerDocument || document;
-				doc = eventDoc.documentElement;
-				body = eventDoc.body;
-
-				Object.defineProperty( event, "pageX", {
-					get: function() {
-						return options.clientX +
-							( doc && doc.scrollLeft || body && body.scrollLeft || 0 ) -
-							( doc && doc.clientLeft || body && body.clientLeft || 0 );
-					}
-				});
-				Object.defineProperty( event, "pageY", {
-					get: function() {
-						return options.clientY +
-							( doc && doc.scrollTop || body && body.scrollTop || 0 ) -
-							( doc && doc.clientTop || body && body.clientTop || 0 );
-					}
-				});
-			}
 		} else if ( document.createEventObject ) {
 			event = document.createEventObject();
 			$.extend( event, options );
