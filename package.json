@@ -26,6 +26,7 @@
       "url": "https://github.com/jquery/jquery-simulate/blob/master/LICENSE.txt"
     }
   ],
+  "main": "jquery.simulate.js",
   "devDependencies": {
     "grunt": "0.4.1",
     "grunt-bowercopy": "1.0.0",
