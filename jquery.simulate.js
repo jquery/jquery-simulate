@@ -14,6 +14,7 @@
 var rkeyEvent = /^key/,
 	rmouseEvent = /^(?:mouse|contextmenu)|click/,
 	// https://developer.mozilla.org/en-US/docs/Web/API/document.createEvent
+	// https://developer.mozilla.org/en-US/docs/Web/Events
 	eventDefs = {
 		// https://developer.mozilla.org/en-US/docs/Web/Events/change
 		'change': {
