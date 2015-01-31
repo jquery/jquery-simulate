@@ -49,6 +49,151 @@ for ( ; i < keyEvents.length; i++ ) {
 
 module( "complex events" );
 
+asyncTest( "alt key and click", function() {
+
+	var el = jQuery( "<div></div>" ).appendTo( "#qunit-fixture" ),
+		button = jQuery( "<button></button>" ).appendTo( "#qunit-fixture" ),
+		calls = 0;
+
+	expect( 2 );
+
+	el.bind( "click", function( event ) {
+		ok( event.altKey, "alt key pressed while click on div" );
+		el.unbind( "click" );
+		if ( ++calls === 2 ) {
+			start();
+		}
+	}).simulate( "click", {
+		altKey: true
+	});
+
+	button.bind( "click", function( event ) {
+		ok( event.altKey, "alt key pressed while click on button" );
+		button.unbind( "click" );
+		if ( ++calls === 2 ) {
+			start();
+		}
+	}).simulate( "click", {
+		altKey: true
+	});
+});
+
+asyncTest( "ctrl key and click", function() {
+
+	var el = jQuery( "<div></div>" ).appendTo( "#qunit-fixture" ),
+		button = jQuery( "<button></button>" ).appendTo( "#qunit-fixture" ),
+		calls = 0;
+
+	expect( 2 );
+
+	el.bind( "click", function( event ) {
+		ok( event.ctrlKey, "ctrl key pressed while click on div" );
+		el.unbind( "click" );
+		if ( ++calls === 2 ) {
+			start();
+		}
+	}).simulate( "click", {
+		ctrlKey: true
+	});
+
+	button.bind( "click", function( event ) {
+		ok( event.ctrlKey, "ctrl key pressed while click on button" );
+		button.unbind( "click" );
+		if ( ++calls === 2 ) {
+			start();
+		}
+	}).simulate( "click", {
+		ctrlKey: true
+	});
+});
+
+asyncTest( "meta key and click", function() {
+
+	var el = jQuery( "<div></div>" ).appendTo( "#qunit-fixture" ),
+		button = jQuery( "<button></button>" ).appendTo( "#qunit-fixture" ),
+		calls = 0;
+
+	expect( 2 );
+
+	el.bind( "click", function( event ) {
+		ok( event.metaKey, "meta key pressed while click on div" );
+		el.unbind( "click" );
+		if ( ++calls === 2 ) {
+			start();
+		}
+	}).simulate( "click", {
+		metaKey: true
+	});
+
+	button.bind( "click", function( event ) {
+		ok( event.metaKey, "meta key pressed while click on button" );
+		button.unbind( "click" );
+		if ( ++calls === 2 ) {
+			start();
+		}
+	}).simulate( "click", {
+		metaKey: true
+	});
+});
+
+asyncTest( "shift key and click", function() {
+
+	var el = jQuery( "<div></div>" ).appendTo( "#qunit-fixture" ),
+		button = jQuery( "<button></button>" ).appendTo( "#qunit-fixture" ),
+		calls = 0;
+
+	expect( 2 );
+
+	el.bind( "click", function( event ) {
+		ok( event.shiftKey, "shift key pressed while click" );
+		el.unbind( "click" );
+		if ( ++calls === 2 ) {
+			start();
+		}
+	}).simulate( "click", {
+		shiftKey: true
+	});
+
+	button.bind( "click", function( event ) {
+		ok( event.shiftKey, "shift key pressed while click on button" );
+		button.unbind( "click" );
+		if ( ++calls === 2 ) {
+			start();
+		}
+	}).simulate( "click", {
+		shiftKey: true
+	});
+});
+
+asyncTest( "right mouse click", function() {
+
+	var el = jQuery( "<div></div>" ).appendTo( "#qunit-fixture" ),
+		button = jQuery( "<button></button>" ).appendTo( "#qunit-fixture" ),
+		calls = 0;
+
+	expect( 2 );
+
+	el.bind( "click", function( event ) {
+		equal( 2, event.button, "right mouse click on div" );
+		el.unbind( "click" );
+		if ( ++calls === 2 ) {
+			start();
+		}
+	}).simulate( "click", {
+		button: 2
+	});
+
+	button.bind( "click", function( event ) {
+		equal( 2, event.button, "right mouse click on button" );
+		button.unbind( "click" );
+		if ( ++calls === 2 ) {
+			start();
+		}
+	}).simulate( "click", {
+		button: 2
+	});
+});
+
 asyncTest( "drag moves option", function() {
 
 	var moves = 15,

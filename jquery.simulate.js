@@ -201,7 +201,16 @@ $.extend( $.simulate.prototype, {
 	},
 
 	dispatchEvent: function( elem, type, event ) {
-		if ( elem[ type ] ) {
+		var useNativeMethod = false;
+
+		if ( elem.type && "checkbox radio".search( elem.type ) > -1 && !( event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.keyCode )) {
+			useNativeMethod = true;
+		}
+
+		if ( useNativeMethod && type === "click" && elem[ type ] ) {
+			// HTMLElement click don't focus the element
+			elem.focus();
+			// IE8 needs the native HTMLElement click function to change checkbox/radio state
 			elem[ type ]();
 		} else if ( elem.dispatchEvent ) {
 			elem.dispatchEvent( event );
