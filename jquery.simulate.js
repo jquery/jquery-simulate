@@ -295,6 +295,7 @@ $.extend( $.simulate.prototype, {
 	simulateDrag: function() {
 		var i = 0,
 			target = this.target,
+			eventDoc = target.ownerDocument,
 			options = this.options,
 			center = options.handle === "corner" ? findCorner( target ) : findCenter( target ),
 			x = Math.floor( center.x ),
@@ -315,14 +316,14 @@ $.extend( $.simulate.prototype, {
 				clientY: Math.round( y )
 			};
 
-			this.simulateEvent( target.ownerDocument, "mousemove", coord );
+			this.simulateEvent( eventDoc, "mousemove", coord );
 		}
 
-		if ( $.contains( document, target ) ) {
+		if ( $.contains( eventDoc, target ) ) {
 			this.simulateEvent( target, "mouseup", coord );
 			this.simulateEvent( target, "click", coord );
 		} else {
-			this.simulateEvent( document, "mouseup", coord );
+			this.simulateEvent( eventDoc, "mouseup", coord );
 		}
 	}
 });
