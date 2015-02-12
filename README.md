@@ -1,32 +1,32 @@
 # jQuery.simulate()
 
-How to build and test jQuery Simulate
-----------------------------------
+Simulate events to help unit test user interactions.
 
-First, get a copy of the git repo by running:
+Project Status
+--------------
 
-```shell
-git clone git://github.com/jquery/jquery-simulate.git
+jquery-simulate is in use by projects of the jQuery Foundation, but isn't under active development. Usually issues are addressed by members of the jQuery UI team when they're affected, while other pull requests linger and get stale. We hesitate to put more time into this project, since its future is unclear.
+
+Specifically we're hoping for the WebDriver API to become a much better solution. We're currently experiementing with that, via [Intern](http://theintern.io/) on [PEP](https://github.com/jquery/pep)).
+
+That said, this project is stable and should work fine. Just keep the above in mind before using it.
+
+How to build
+------------
+
+If you don't yet have grunt installed:
+
+```sh
+npm install -g grunt-cli
 ```
 
-Enter the directory and install the node dependencies:
-
-```shell
-cd jquery-simulate && npm install
+Then:
+```sh
+npm install
+grunt
 ```
 
-Make sure you have `grunt` installed by testing:
+How to test
+-----------
 
-```shell
-grunt -version
-```
-
-If not, run:
-
-```shell
-npm install -g grunt
-```
-
-To run tests locally, run `grunt`, and this will run the tests in PhantomJS.
-
-You can also run the tests in a browser by navigating to the `test/` directory, but first run `grunt` to install submodules.
+Open the `test/index.html` in a browser.
