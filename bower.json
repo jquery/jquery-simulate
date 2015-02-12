@@ -2,7 +2,7 @@
 	"name": "jquery-simulate",
 	"main": "jquery.simulate.js",
 	"devDependencies": {
-		"qunit": "1.14.0",
+		"qunit": "1.17.1",
 		"jquery-1.6.0": "jquery#1.6.0",
 		"jquery-1.6.1": "jquery#1.6.1",
 		"jquery-1.6.2": "jquery#1.6.2",

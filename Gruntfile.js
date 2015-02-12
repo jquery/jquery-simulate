@@ -28,7 +28,7 @@ grunt.initConfig({
 			files: {
 				"qunit/qunit.js": "qunit/qunit/qunit.js",
 				"qunit/qunit.css": "qunit/qunit/qunit.css",
-				"qunit/MIT-LICENSE.txt": "qunit/MIT-LICENSE.txt",
+				"qunit/LICENSE.txt": "qunit/LICENSE.txt",
 
 				"jquery-1.6.0/jquery.js": "jquery-1.6.0/jquery.js",
 				"jquery-1.6.0/MIT-LICENSE.txt": "jquery-1.6.0/MIT-LICENSE.txt",
