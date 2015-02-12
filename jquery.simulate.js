@@ -12,7 +12,17 @@
 ;(function( $, undefined ) {
 
 var rkeyEvent = /^key/,
-	rmouseEvent = /^(?:mouse|contextmenu)|click/;
+	rmouseEvent = /^(?:mouse|contextmenu)|click/,
+	// https://developer.mozilla.org/en-US/docs/Web/API/document.createEvent
+	// https://developer.mozilla.org/en-US/docs/Web/Events
+	eventDefs = {
+		// https://developer.mozilla.org/en-US/docs/Web/Events/change
+		'change': {
+			'@type': 'HTMLEvents',
+			bubble: true,
+			cancelable: false
+		}
+	}
 
 $.fn.simulate = function( type, options ) {
 	return this.each(function() {
@@ -82,6 +92,35 @@ $.extend( $.simulate.prototype, {
 		if ( rmouseEvent.test( type ) ) {
 			return this.mouseEvent( type, options );
 		}
+
+		// finally, attempt to lookup event by type
+		var eventDef = eventDefs[type];
+
+		if (eventDef) {
+
+			// (shallow) clone the definition to prevent modification
+			eventDef = $.extend({}, eventDef);
+
+			var eventType = eventDef['@type'];
+			delete eventDef['@type'];
+
+			// copy first from event def, then options overrides
+			options = $.extend({}, eventDef, options);
+
+			if (eventType === 'HTMLEvents') {
+				return this.htmlEvent( type, options );
+			}
+			else if (eventType === 'UIEvents') {
+				return this.uiEvent( type, options );
+			}
+			else {
+				// TODO: MouseEvents, MutationEvents, etc.
+			}
+		}
+
+		// we'll throw error if we couldn't match event type
+		throw new Error("Could not create event of type: " + type);
+
 	},
 
 	mouseEvent: function( type, options ) {
@@ -150,6 +189,41 @@ $.extend( $.simulate.prototype, {
 		return event;
 	},
 
+	/**
+	 * Default options for HTMLEvents event type.
+	 */
+	htmlEventDefaultOptions: {
+		bubbles: true,
+		cancelable: true
+	},
+
+	/**
+	 * Handle HTMLEvents event type.
+	 *
+	 * @param type Event type string, e.g. "change".
+	 * @param options Any options to override the defaults.
+	 * @return The HTML event object.
+	 */
+	htmlEvent: function( type, options ) {
+		var event;
+		options = $.extend({}, this.htmlEventDefaultOptions, options);
+
+		if ( document.createEvent ) {
+			try {
+				event = document.createEvent( "HTMLEvents" );
+				event.initKeyEvent( type, options.bubbles, options.cancelable );
+			} catch( err ) {
+				event = document.createEvent( "Events" );
+				event.initEvent( type, options.bubbles, options.cancelable );
+			}
+		} else if ( document.createEventObject ) {
+			event = document.createEventObject();
+			$.extend( event, options );
+		}
+
+		return event;
+	},
+
 	keyEvent: function( type, options ) {
 		var event;
 		options = $.extend({
@@ -195,6 +269,41 @@ $.extend( $.simulate.prototype, {
 		if ( !!/msie [\w.]+/.exec( navigator.userAgent.toLowerCase() ) || (({}).toString.call( window.opera ) === "[object Opera]") ) {
 			event.keyCode = (options.charCode > 0) ? options.charCode : options.keyCode;
 			event.charCode = undefined;
+		}
+
+		return event;
+	},
+
+	/**
+	 * Handle UIEvents event type.
+	 * https://developer.mozilla.org/en-US/docs/Web/API/UIEvent
+	 *
+	 * @param type Event type string, e.g. "resize".
+	 * @param options Any options to override the defaults.
+	 * @return The UIEvent event object.
+	 */
+	uiEvent: function( type, options ) {
+		var event;
+		options = $.extend({
+			bubbles: true,
+			cancelable: true,
+			view: window
+		}, options );
+
+		if ( document.createEvent ) {
+			try {
+				event = document.createEvent( "UIEvents" );
+				event.initUIEvent( type, options.bubbles, options.cancelable, options.view);
+			} catch( err ) {
+				event = document.createEvent( "Events" );
+				event.initEvent( type, options.bubbles, options.cancelable );
+				$.extend( event, {
+					view: options.view
+				});
+			}
+		} else if ( document.createEventObject ) {
+			event = document.createEventObject();
+			$.extend( event, options );
 		}
 
 		return event;
