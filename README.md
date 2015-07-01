@@ -30,3 +30,9 @@ How to test
 -----------
 
 Open the `test/index.html` in a browser.
+
+jQuery Core Support
+-------------------
+
+Simulate supports jQuery Core 1.7+
+

@@ -219,7 +219,7 @@ $.extend( $.simulate.prototype, {
 			triggered = true;
 		}
 
-		element.bind( "focus", trigger );
+		element.on( "focus", trigger );
 		element[ 0 ].focus();
 
 		if ( !triggered ) {
@@ -228,7 +228,7 @@ $.extend( $.simulate.prototype, {
 			element.trigger( focusinEvent );
 			element.triggerHandler( "focus" );
 		}
-		element.unbind( "focus", trigger );
+		element.off( "focus", trigger );
 	},
 
 	simulateBlur: function() {
@@ -240,7 +240,7 @@ $.extend( $.simulate.prototype, {
 			triggered = true;
 		}
 
-		element.bind( "blur", trigger );
+		element.on( "blur", trigger );
 		element[ 0 ].blur();
 
 		// blur events are async in IE
@@ -258,7 +258,7 @@ $.extend( $.simulate.prototype, {
 				element.trigger( focusoutEvent );
 				element.triggerHandler( "blur" );
 			}
-			element.unbind( "blur", trigger );
+			element.off( "blur", trigger );
 		}, 1 );
 	}
 });
