@@ -316,7 +316,7 @@ $.extend( $.simulate.prototype, {
 				clientY: Math.round( y )
 			};
 
-			this.simulateEvent( eventDoc, "mousemove", coord );
+			this.simulateEvent( target, "mousemove", coord );
 		}
 
 		if ( $.contains( eventDoc, target ) ) {
