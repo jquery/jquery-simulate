@@ -86,7 +86,7 @@ $.extend( $.simulate.prototype, {
 
 	mouseEvent: function( type, options ) {
 		var event, eventDoc, doc, body;
-		options = $.extend({
+		var defaultOptions = {
 			bubbles: true,
 			cancelable: (type !== "mousemove"),
 			view: window,
@@ -101,7 +101,8 @@ $.extend( $.simulate.prototype, {
 			metaKey: false,
 			button: 0,
 			relatedTarget: undefined
-		}, options );
+		};
+		options = $.extend(defaultOptions, options );
 
 		if ( document.createEvent ) {
 			event = document.createEvent( "MouseEvents" );
@@ -110,6 +111,13 @@ $.extend( $.simulate.prototype, {
 				options.screenX, options.screenY, options.clientX, options.clientY,
 				options.ctrlKey, options.altKey, options.shiftKey, options.metaKey,
 				options.button, options.relatedTarget || document.body.parentNode );
+
+			// add other options which haven't been set via constructor
+			$.each(options, function(k, v){
+				if($.inArray(k, defaultOptions) === -1){
+					event[k] = v;
+				}
+			});
 
 			// IE 9+ creates events with pageX and pageY set to 0.
 			// Trying to modify the properties throws an error,
