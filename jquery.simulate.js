@@ -161,7 +161,8 @@ $.extend( $.simulate.prototype, {
 			shiftKey: false,
 			metaKey: false,
 			keyCode: 0,
-			charCode: undefined
+			charCode: undefined,
+			which: undefined
 		}, options );
 
 		if ( document.createEvent ) {
@@ -184,7 +185,8 @@ $.extend( $.simulate.prototype, {
 					shiftKey: options.shiftKey,
 					metaKey: options.metaKey,
 					keyCode: options.keyCode,
-					charCode: options.charCode
+					charCode: options.charCode,
+					which: options.which
 				});
 			}
 		} else if ( document.createEventObject ) {
