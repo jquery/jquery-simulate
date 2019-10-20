@@ -12,7 +12,16 @@
 ;(function( $, undefined ) {
 
 var rkeyEvent = /^key/,
+	rdashAlpha = /-([a-z])/g,
 	rmouseEvent = /^(?:mouse|contextmenu)|click/;
+
+function fcamelCase( _all, letter ) {
+	return letter.toUpperCase();
+}
+
+function camelCase( string ) {
+	return string.replace( rdashAlpha, fcamelCase );
+}
 
 $.fn.simulate = function( type, options ) {
 	return this.each(function() {
@@ -21,7 +30,7 @@ $.fn.simulate = function( type, options ) {
 };
 
 $.simulate = function( elem, type, options ) {
-	var method = $.camelCase( "simulate-" + type );
+	var method = camelCase( "simulate-" + type );
 
 	this.target = elem;
 	this.options = options;
