@@ -1,12 +1,12 @@
  /*!
- * jQuery Simulate v@VERSION - simulate browser mouse and keyboard events
+ * jQuery Simulate v1.1.1 - simulate browser mouse and keyboard events
  * https://github.com/jquery/jquery-simulate
  *
  * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
- * Date: @DATE
+ * Date: 2020-05-06
  */
 
 ;(function( $, undefined ) {
