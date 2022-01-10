@@ -7,3 +7,8 @@ Trey Hunner <treyhunner@gmail.com>
 Mike Sherov <mike.sherov@gmail.com>
 Andrei Picus <office.nightcrawler@gmail.com>
 Lars Laade <lars.laade@googlemail.com>
+Anne-Gaelle Colom <coloma@westminster.ac.uk>
+Jörn Zaefferer <joern.zaefferer@gmail.com>
+Kai Cataldo <kaicataldo@gmail.com>
+Alexander Schmitz <arschmitz@gmail.com>
+Michał Gołębiowski-Owczarek <m.goleb@gmail.com>
