@@ -5,7 +5,7 @@ Simulate events to help unit test user interactions.
 Project Status
 --------------
 
-jquery-simulate is in use by projects of the jQuery Foundation, but isn't under active development. Usually issues are addressed by members of the jQuery UI team when they're affected, while other pull requests linger and get stale. We hesitate to put more time into this project, since its future is unclear.
+jquery-simulate is in use by projects of the OpenJS Foundation, but isn't under active development. Usually issues are addressed by members of the jQuery UI team when they're affected, while other pull requests linger and get stale. We hesitate to put more time into this project, since its future is unclear.
 
 Specifically we're hoping for the WebDriver API to become a much better solution. We're currently experimenting with that, via [Intern](http://theintern.io/) on [PEP](https://github.com/jquery/pep)).
 
