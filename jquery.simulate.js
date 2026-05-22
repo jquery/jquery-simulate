@@ -9,7 +9,8 @@
  * Date: @DATE
  */
 
-;(function( $, undefined ) {
+( function( $, undefined ) {
+"use strict";
 
 var rkeyEvent = /^key/,
 	rdashAlpha = /-([a-z])/g,
@@ -24,9 +25,9 @@ function camelCase( string ) {
 }
 
 $.fn.simulate = function( type, options ) {
-	return this.each(function() {
+	return this.each( function() {
 		new $.simulate( this, type, options );
-	});
+	} );
 };
 
 $.simulate = function( elem, type, options ) {
@@ -74,7 +75,7 @@ $.extend( $.simulate, {
 		MIDDLE: 1,
 		RIGHT: 2
 	}
-});
+} );
 
 $.extend( $.simulate.prototype, {
 
@@ -95,9 +96,9 @@ $.extend( $.simulate.prototype, {
 
 	mouseEvent: function( type, options ) {
 		var event, eventDoc, doc, body;
-		options = $.extend({
+		options = $.extend( {
 			bubbles: true,
-			cancelable: (type !== "mousemove"),
+			cancelable: ( type !== "mousemove" ),
 			view: window,
 			detail: 0,
 			screenX: 0,
@@ -134,18 +135,19 @@ $.extend( $.simulate.prototype, {
 							( doc && doc.scrollLeft || body && body.scrollLeft || 0 ) -
 							( doc && doc.clientLeft || body && body.clientLeft || 0 );
 					}
-				});
+				} );
 				Object.defineProperty( event, "pageY", {
 					get: function() {
 						return options.clientY +
 							( doc && doc.scrollTop || body && body.scrollTop || 0 ) -
 							( doc && doc.clientTop || body && body.clientTop || 0 );
 					}
-				});
+				} );
 			}
 		} else if ( document.createEventObject ) {
 			event = document.createEventObject();
 			$.extend( event, options );
+
 			// standards event.button uses constants defined here: http://msdn.microsoft.com/en-us/library/ie/ff974877(v=vs.85).aspx
 			// old IE event.button uses constants defined here: http://msdn.microsoft.com/en-us/library/ie/ms533544(v=vs.85).aspx
 			// so we actually need to map the standard back to oldIE
@@ -161,7 +163,7 @@ $.extend( $.simulate.prototype, {
 
 	keyEvent: function( type, options ) {
 		var event;
-		options = $.extend({
+		options = $.extend( {
 			bubbles: true,
 			cancelable: true,
 			view: window,
@@ -179,11 +181,12 @@ $.extend( $.simulate.prototype, {
 				event.initKeyEvent( type, options.bubbles, options.cancelable, options.view,
 					options.ctrlKey, options.altKey, options.shiftKey, options.metaKey,
 					options.keyCode, options.charCode );
+
 			// initKeyEvent throws an exception in WebKit
 			// see: http://stackoverflow.com/questions/6406784/initkeyevent-keypress-only-works-in-firefox-need-a-cross-browser-solution
 			// and also https://bugs.webkit.org/show_bug.cgi?id=13368
 			// fall back to a generic event until we decide to implement initKeyboardEvent
-			} catch( err ) {
+			} catch ( _e ) {
 				event = document.createEvent( "Events" );
 				event.initEvent( type, options.bubbles, options.cancelable );
 				$.extend( event, {
@@ -194,15 +197,15 @@ $.extend( $.simulate.prototype, {
 					metaKey: options.metaKey,
 					keyCode: options.keyCode,
 					charCode: options.charCode
-				});
+				} );
 			}
 		} else if ( document.createEventObject ) {
 			event = document.createEventObject();
 			$.extend( event, options );
 		}
 
-		if ( !!/msie [\w.]+/.exec( navigator.userAgent.toLowerCase() ) || (({}).toString.call( window.opera ) === "[object Opera]") ) {
-			event.keyCode = (options.charCode > 0) ? options.charCode : options.keyCode;
+		if ( !!/msie [\w.]+/.exec( navigator.userAgent.toLowerCase() ) || ( ( {} ).toString.call( window.opera ) === "[object Opera]" ) ) {
+			event.keyCode = ( options.charCode > 0 ) ? options.charCode : options.keyCode;
 			event.charCode = undefined;
 		}
 
@@ -253,7 +256,8 @@ $.extend( $.simulate.prototype, {
 		element[ 0 ].blur();
 
 		// blur events are async in IE
-		setTimeout(function() {
+		setTimeout( function() {
+
 			// IE won't let the blur occur if the window is inactive
 			if ( element[ 0 ].ownerDocument.activeElement === element[ 0 ] ) {
 				element[ 0 ].ownerDocument.body.focus();
@@ -270,8 +274,7 @@ $.extend( $.simulate.prototype, {
 			element.off( "blur", trigger );
 		}, 1 );
 	}
-});
-
+} );
 
 
 /** complex events **/
@@ -316,7 +319,7 @@ $.extend( $.simulate.prototype, {
 
 		this.simulateEvent( target, "mousedown", coord );
 
-		for ( ; i < moves ; i++ ) {
+		for ( ; i < moves; i++ ) {
 			x += dx / moves;
 			y += dy / moves;
 
@@ -335,6 +338,6 @@ $.extend( $.simulate.prototype, {
 			this.simulateEvent( eventDoc, "mouseup", coord );
 		}
 	}
-});
+} );
 
-})( jQuery );
+} )( jQuery );

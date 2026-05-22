@@ -2,11 +2,30 @@
   "name": "jquery-simulate",
   "title": "jQuery Simulate",
   "description": "jQuery plugin for simulating browser mouse and keyboard events",
-  "version": "1.1.2-pre",
+  "version": "2.0.0-pre",
+  "type": "commonjs",
   "homepage": "https://github.com/jquery/jquery-simulate",
   "author": {
     "name": "OpenJS Foundation and other contributors",
-    "url": "https://github.com/jquery/jquery-simulate/blob/master/AUTHORS.txt"
+    "url": "https://github.com/jquery/jquery-simulate/blob/main/AUTHORS.txt"
+  },
+  "scripts": {
+    "authors:check": "node --input-type=module -e \"import { checkAuthors } from './build/release/authors.js'; checkAuthors()\"",
+    "authors:update": "node --input-type=module -e \"import { updateAuthors } from './build/release/authors.js'; updateAuthors()\"",
+    "build": "node --input-type=module -e \"import { build } from './build/tasks/build.js'; build()\"",
+    "build:clean": "rimraf --glob dist/*.{js,map}",
+    "lint": "eslint --cache .",
+    "release": "release-it",
+    "npmcopy": "node build/tasks/npmcopy.js",
+    "pretest": "npm run npmcopy && npm run build && npm run lint",
+    "test:browser": "npm run pretest && npm run test:unit -- -b chrome -b firefox --headless",
+    "test:chrome": "npm run pretest && npm run test:unit -- -v -b chrome --headless",
+    "test:edge": "npm run pretest && npm run test:unit -- -v -b edge --headless",
+    "test:firefox": "npm run pretest && npm run test:unit -- -v -b firefox --headless",
+    "test:safari": "npm run pretest && npm run test:unit -- -b safari",
+    "test:server": "jtr serve",
+    "test:unit": "jtr",
+    "test": "npm run test:browser"
   },
   "maintainers": [
     {
@@ -20,21 +39,36 @@
     "url": "git://github.com/jquery/jquery-simulate.git"
   },
   "bugs": "https://github.com/jquery/jquery-simulate/issues",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/jquery/jquery-simulate/blob/master/LICENSE.txt"
-    }
+  "license": "MIT",
+  "files": [
+    "dist",
+    "jquery.simulate.js",
+    "README.md",
+    "AUTHORS.txt",
+    "LICENSE.txt"
   ],
   "devDependencies": {
-    "grunt": "1.1.0",
-    "grunt-bowercopy": "1.2.5",
-    "grunt-compare-size": "0.4.2",
-    "grunt-contrib-jshint": "2.1.0",
-    "grunt-contrib-qunit": "3.1.0",
-    "grunt-contrib-uglify": "4.0.1",
-    "grunt-git-authors": "3.2.0",
-    "testswarm": "1.1.0"
+    "@swc/core": "1.11.24",
+    "cross-env": "10.1.0",
+    "eslint": "9.21.0",
+    "eslint-config-jquery": "3.0.2",
+    "globals": "16.5.0",
+    "jquery": "4.0.0",
+    "jquery-1.12.4": "npm:jquery@1.12.4",
+    "jquery-2.2.4": "npm:jquery@2.2.4",
+    "jquery-3.0.0": "npm:jquery@3.0.0",
+    "jquery-3.1.1": "npm:jquery@3.1.1",
+    "jquery-3.2.1": "npm:jquery@3.2.1",
+    "jquery-3.3.1": "npm:jquery@3.3.1",
+    "jquery-3.4.1": "npm:jquery@3.4.1",
+    "jquery-3.5.1": "npm:jquery@3.5.1",
+    "jquery-3.6.4": "npm:jquery@3.6.4",
+    "jquery-3.7.1": "npm:jquery@3.7.1",
+    "jquery-4.0.0": "npm:jquery@4.0.0",
+    "jquery-test-runner": "0.3.0",
+    "qunit": "2.24.2",
+    "release-it": "19.0.6",
+    "rimraf": "6.1.0"
   },
   "keywords": [
     "simulate",
